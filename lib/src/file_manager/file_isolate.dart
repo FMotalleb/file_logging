@@ -77,7 +77,9 @@ class FileIsolate {
     toSource.send(com.sendPort);
     await for (final command in com) {
       if (command is! FileCommand) {
-        throw Exception('this isolate is not made to handle anything other than [FileCommand]');
+        throw Exception(
+          'this isolate is not made to handle anything other than [FileCommand]',
+        );
       }
       final result = await command.act(file);
       fileEvents.send(result);

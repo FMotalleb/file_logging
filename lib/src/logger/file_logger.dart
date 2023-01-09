@@ -50,7 +50,11 @@ class FileLogger {
   final Map<String, FileIsolate> _isolateMap = {};
   Future<FileIsolate> _isolateOf(String loggerName) async {
     final presentInMap = _isolateMap[loggerName] != null;
-    final isolate = _isolateMap[loggerName] ??= await FileIsolate.init(filePathGetter(loggerName));
+    final isolate = _isolateMap[loggerName] ??= await FileIsolate.init(
+      filePathGetter(
+        loggerName,
+      ),
+    );
     if (!presentInMap && fileEventListener != null) {
       isolate.listenToIsolate(fileEventListener!);
     }

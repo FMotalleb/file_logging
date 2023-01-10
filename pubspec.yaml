@@ -1,5 +1,5 @@
 name: file_logging
-description: A starting point for Dart libraries or applications.
+description: simple extension on `logging` package to handle logging into files using isolates (this is not supported in web)
 version: 1.0.0
 repository: https://github.com/FMotalleb/file_logging
 

@@ -26,7 +26,9 @@ class FileLogger {
   /// * only accessible after calling [init] factory
   static FileLogger get instance {
     if (_instance == null) {
-      throw Exception('Please initialize file logger first then try to access its instance');
+      throw Exception(
+        'Please initialize file logger first then try to access its instance',
+      );
     }
     return _instance!;
   }

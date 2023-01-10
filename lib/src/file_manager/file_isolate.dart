@@ -28,7 +28,9 @@ class FileIsolate {
           message.codeUnits,
         ),
       );
-  StreamSubscription<FileCommandResponse> listenToIsolate(void Function(FileCommandResponse data) listener) {
+  StreamSubscription<FileCommandResponse> listenToIsolate(
+    void Function(FileCommandResponse data) listener,
+  ) {
     return _fromIsolate.listen(listener);
   }
 

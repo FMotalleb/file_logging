@@ -1,5 +1,6 @@
 library file_logging.file_isolate;
 
+import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -27,8 +28,8 @@ class FileIsolate {
           message.codeUnits,
         ),
       );
-  void listenToIsolate(void Function(FileCommandResponse data) listener) {
-    _fromIsolate.listen(listener);
+  StreamSubscription<FileCommandResponse> listenToIsolate(void Function(FileCommandResponse data) listener) {
+    return _fromIsolate.listen(listener);
   }
 
   static Future<FileIsolate> init(final String fileAddress) async {

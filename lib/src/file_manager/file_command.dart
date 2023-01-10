@@ -19,20 +19,22 @@ class FileCommandResponse {
   final bool successful;
   final Uint8List? data;
   final String message;
-
+  final FileAction action;
   FileCommandResponse.successful({
     this.data,
     this.message = 'ok',
+    required this.action,
   }) : successful = true;
 
   FileCommandResponse.failed({
     this.data,
     required this.message,
+    required this.action,
   }) : successful = false;
 
   @override
   String toString() {
-    return 'FileCommandResponse(was successful: $successful,message: $message,contains data: ${data != null})';
+    return 'FileCommandResponse(action: ${action.name},successful: $successful, message: $message, contains-data: ${data != null})';
   }
 }
 
@@ -62,16 +64,18 @@ class FileCommand {
       case FileAction.delete:
         try {
           await file.delete();
-          return FileCommandResponse.successful();
+          return FileCommandResponse.successful(action: action);
         } catch (e) {
           return FileCommandResponse.failed(
             message: e.toString(),
+            action: action,
           );
         }
       case FileAction.write:
         if (params == null) {
           return FileCommandResponse.failed(
             message: 'cannot execute write operation with no params',
+            action: action,
           );
         }
         try {
@@ -79,9 +83,12 @@ class FileCommand {
             params!,
             mode: FileMode.writeOnly,
           );
-          return FileCommandResponse.successful();
+          return FileCommandResponse.successful(
+            action: action,
+          );
         } catch (e) {
           return FileCommandResponse.failed(
+            action: action,
             message: e.toString(),
           );
         }
@@ -89,6 +96,7 @@ class FileCommand {
       case FileAction.append:
         if (params == null) {
           return FileCommandResponse.failed(
+            action: action,
             message: 'cannot execute write operation with no params',
           );
         }
@@ -97,9 +105,12 @@ class FileCommand {
             params!,
             mode: FileMode.writeOnlyAppend,
           );
-          return FileCommandResponse.successful();
+          return FileCommandResponse.successful(
+            action: action,
+          );
         } catch (e) {
           return FileCommandResponse.failed(
+            action: action,
             message: e.toString(),
           );
         }
@@ -107,9 +118,12 @@ class FileCommand {
       case FileAction.create:
         try {
           await file.create(recursive: true);
-          return FileCommandResponse.successful();
+          return FileCommandResponse.successful(
+            action: action,
+          );
         } catch (e) {
           return FileCommandResponse.failed(
+            action: action,
             message: e.toString(),
           );
         }
@@ -117,10 +131,12 @@ class FileCommand {
         try {
           final result = await file.readAsBytes();
           return FileCommandResponse.successful(
+            action: action,
             data: result,
           );
         } catch (e) {
           return FileCommandResponse.failed(
+            action: action,
             message: e.toString(),
           );
         }

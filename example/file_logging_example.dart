@@ -7,17 +7,19 @@ void main() async {
     Logger.root,
     filePathGetter: (logger) => '$logger.log',
     fileEventListener: (FileCommandResponse response) {
-      // print(response);
+      print(response);
       if (response.data != null) {
         print(String.fromCharCodes(response.data!));
       }
     },
   );
-
   final logger = Logger('temp');
-  for (int i = 0; i <= 680; i++) {
+  await fLogger.initFileIsolateForAttachedLoggers();
+  // fLogger.readAll();
+  for (int i = 0; i <= 100; i++) {
     logger.info('Log no.$i');
+    Future.delayed(const Duration(milliseconds: 20));
   }
   fLogger.readAll();
-  fLogger.terminateAllIsolates();
+  // fLogger.terminateAllIsolates();
 }
